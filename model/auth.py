@@ -7,7 +7,7 @@ from .user import UserSchema
 
 class Auth(db.Model):
     __tablename__ = "Auth"
-    auth_token = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
+    auth_id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
     user_id = db.Column(UUID(as_uuid=True), db.ForeignKey('User.user_id'), nullable=False)
     expiration = db.Column(db.DateTime, nullable=False)
     user = db.relationship("User", back_populates="auth")
@@ -19,7 +19,7 @@ class Auth(db.Model):
 
 class AuthTokenSchema(ma.Schema):
     class Meta:
-        fields = ['auth_token', 'user', 'expiration']
+        fields = ['auth_id', 'user', 'expiration']
 
     user = ma.fields.Nested(UserSchema(only=("role", "user_id", "active")))
 
