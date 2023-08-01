@@ -6,7 +6,7 @@ from db import db
 
 class About_me(db.Model):
     __tablename__ = "About_me"
-    about_id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
+    about_me_id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
     about_name = db.Column(db.String(), nullable=False, unique=True)
     about_info = db.Column(db.String(), nullable=False, unique=True)
     active = db.Column(db.Boolean(), nullable=False, default=True)
@@ -22,7 +22,7 @@ class About_me(db.Model):
 
 class AboutSchema(ma.Schema):
     class Meta:
-        fields = ['about_id', 'about_name', 'about_info', 'active']
+        fields = ['about_me_id', 'about_name', 'about_info', 'active']
 
 
 about_schema = AboutSchema()

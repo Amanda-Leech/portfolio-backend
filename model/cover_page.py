@@ -7,7 +7,7 @@ from db import db
 
 class Cover_page(db.Model):
     __tablename__ = "Cover_page"
-    cover_id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
+    cover_page_id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
     cover_info = db.Column(db.String(), nullable=False)
     active = db.Column(db.Boolean(), nullable=False, default=True)
 
@@ -21,7 +21,7 @@ class Cover_page(db.Model):
 
 class CoverSchema(ma.Schema):
     class Meta:
-        fields = ['cover_id', 'cover_info', 'active']
+        fields = ['cover_page_id', 'cover_info', 'active']
 
 
 cover_schema = CoverSchema()

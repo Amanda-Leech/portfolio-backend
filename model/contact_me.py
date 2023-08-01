@@ -7,7 +7,7 @@ from db import db
 
 class Contact_me(db.Model):
     __tablename__ = "Contact_me"
-    contact_id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
+    contact_me_id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
     contact_name = db.Column(db.String(), nullable=False, unique=True)
     linked_in = db.Column(db.String())
     git_hub = db.Column(db.String())
@@ -29,7 +29,7 @@ class Contact_me(db.Model):
 
 class ContactSchema(ma.Schema):
     class Meta:
-        fields = ['contact_id', 'contact_name', 'linked_in', 'git_hub', 'phone', 'email', 'active']
+        fields = ['contact_me_id', 'contact_name', 'linked_in', 'git_hub', 'phone', 'email', 'active']
 
 
 contact_schema = ContactSchema()
