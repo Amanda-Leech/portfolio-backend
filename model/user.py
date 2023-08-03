@@ -12,7 +12,7 @@ class User(db.Model):
     role = db.Column(db.String(), default='admin', nullable=False)
     active = db.Column(db.Boolean(), nullable=False, default=True)
 
-    auth = db.relationship('AuthToken', back_populates='user')
+    auth = db.relationship('Auth', back_populates='user')
 
     def __init__(self, email, password, role='admin', active=True):
         self.email = email
