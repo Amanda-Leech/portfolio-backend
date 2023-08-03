@@ -3,12 +3,12 @@ from db import db
 from model.user import User
 
 def create_admin():
-    print("Querying for Super Admin user...")
+    print("Querying for Admin user...")
 
     user_data = db.session.query(User).filter(User.email == 'Amanda_O_Leech@yahoo.com').first()
 
     if user_data == None:
-        print("Super Admin not found! Creating Amanda_O_Leech@yahoo.com user...")
+        print("Admin not found! Creating Amanda_O_Leech@yahoo.com user...")
         email = 'Amanda_O_Leech@yahoo.com'
         newpw = input(' Enter a password: ')
         password = newpw
@@ -22,4 +22,4 @@ def create_admin():
         db.session.commit()
 
     else:
-        print("super user found!")
+        print("Admin found!")

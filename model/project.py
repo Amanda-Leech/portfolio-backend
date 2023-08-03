@@ -30,5 +30,5 @@ class ProjectSchema(ma.Schema):
         fields = ['project_title', 'project_url', 'git_url', 'project_info', 'active']
 
 
-Project_schema = ProjectSchema()
-Projects_schema = ProjectSchema(many=True)
+project_schema = ProjectSchema()
+projects_schema = ProjectSchema(many=True)

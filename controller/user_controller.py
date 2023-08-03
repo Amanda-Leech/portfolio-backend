@@ -74,7 +74,7 @@ def user_get_from_auth_token(req: Request, auth_info) -> Response:
 
 
 @authenticate
-def users_get_all(req: Request) -> Response:
+def user_get_all(req: Request) -> Response:
     all_users = db.session.query(User).order_by(User.last_name.asc()).order_by(User.first_name.asc()).all()
 
     return jsonify({"message": "user results", "users": users_schema.dump(all_users)})
@@ -118,21 +118,21 @@ def user_update(req: Request, user_id, auth_info) -> Response:
 
     if user_data:
         if user_data.active == True or active == True:
-            if auth_info.user.role != 'super-admin' and user_data.role == 'super-admin':
-                return jsonify({"message": "admins cannot update super admins"}), 401
+            if auth_info.user.role != 'admin' and user_data.role == 'admin':
+                return jsonify({"message": "admins cannot update admins"}), 401
 
             if role:
-                if role == 'super-admin' and auth_info.user.role == 'admin':
-                    return jsonify({"message": "admins cannot update admins to super-admin"}), 401
+                if role == 'admin' and auth_info.user.role == 'admin':
+                    return jsonify({"message": "admins cannot update admins to admin"}), 401
 
-                if auth_info.user.role not in ['admin', 'super-admin']:
+                if auth_info.user.role not in ['admin', 'admin']:
                     return jsonify({"message": "unauthorized"}), 401
 
                 if auth_info.user.user_id == user_data.user_id:
                     return jsonify({"message": "user cannot change own role"}), 401
 
-                if role == 'super-admin':
-                    if auth_info.user.role != 'super-admin':
+                if role == 'admin':
+                    if auth_info.user.role != 'admin':
                         return jsonify({"message": "unauthorized"}), 401
 
             if email:
@@ -160,7 +160,7 @@ def user_delete(req: Request, user_id, auth_info) -> Response:
     if auth_info.user.user_id == user_id:
         return jsonify({"message": "user cannot delete themself"}), 403
 
-    if auth_info.user.role != 'super-admin':
+    if auth_info.user.role != 'admin':
         return jsonify({"message": "forbidden - admins cannot delete users"}), 403
 
     user_data = db.session.query(User).filter(User.user_id == user_id).first()
@@ -179,7 +179,7 @@ def user_status_update(req: Request, user_id, auth_info) -> Response:
     if validate_uuid4(user_id) == False:
         return jsonify({"message": "invalid id"}), 400
 
-    if auth_info.user.role in ['admin', 'super-admin']:
+    if auth_info.user.role in ['admin']:
         user_data = db.session.query(User).filter(User.user_id == user_id).first()
 
         if user_data:
@@ -201,7 +201,7 @@ def user_status_update(req: Request, user_id, auth_info) -> Response:
                 return jsonify({"message": "unauthorized"}), 401
          
 @authenticate
-def users_get_by_search(req: Request) -> Response:
+def user_get_by_search(req: Request) -> Response:
     user_search= req.args.get('q').lower()
  
     user_query = db.session.query(User).filter(db.or_(

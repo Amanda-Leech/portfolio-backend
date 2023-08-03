@@ -5,7 +5,7 @@ from flask_cors import CORS
 from flask_marshmallow import Marshmallow
 from db import db, init_db
 from model.user import User
-from lib.super_admin import create_admin
+from lib.admin import create_admin
 from os.path import abspath, dirname, join
 import route
 import controller
@@ -21,7 +21,7 @@ def create_app(config_file=None):
     database_name = "profile"
     engine = create_engine(f'postgresql://{database_host}/{database_name}')
     engine.connect()
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgres://{database_host}/{database_name}'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{database_host}/{database_name}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     init_db(app, db)
     current_dir = dirname(abspath(__file__))
