@@ -54,7 +54,6 @@ def auth_add(req: Request) -> Response:
 
 @authenticate_return_auth
 def auth_remove(req: Request, auth_info) -> Response:
-    if req.content_type == "application/json":
         try:
             db.session.delete(auth_info)
             db.session.commit()
@@ -62,6 +61,3 @@ def auth_remove(req: Request, auth_info) -> Response:
             return jsonify("User logged out"), 200
         except:
             return jsonify("Could not delete session"), 500
-    else:
-        return jsonify({"message": "request must be in JSON format"}), 400
-

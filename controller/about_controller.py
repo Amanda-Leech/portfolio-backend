@@ -19,31 +19,25 @@ def about_add(req: Request,auth_info) -> Response:
     if post_data:
         about_title = post_data.get('about_title')
         about_info = post_data.get('about_info')
-        about_id = post_data.get("about_id")
         active = post_data.get("active")
 
         if auth_info.user.role not in ["admin"]:
             return jsonify({"message": "not authorized"}), 401
 
         if not about_title or not about_info:
-            return jsonify({"message" : "About and use required"}), 400
+            return jsonify({"message" : "Title and info required"}), 400
 
         if active and active not in [True, False]:
             return jsonify({"error": "invalid"}), 400
 
-        if about_id:
-            if not validate_uuid4(about_id):
-                return jsonify({"message": 'not a valid about_id'}), 400
+        new_about = About.get_new_about()
 
-            new_about = About.get_new_about()
+        populate_object(new_about, post_data)
 
-            populate_object(new_about, post_data)
+        db.session.add(new_about)
+        db.session.commit()
 
-            db.session.add(new_about)
-            db.session.commit()
-
-            return jsonify({"message": "about created", "about": about_schema.dump(new_about)}), 201
-        return jsonify({"message": "About id needed"}), 400
+        return jsonify({"message": "about created", "about": about_schema.dump(new_about)}), 201
     return jsonify({"message": 'no data'}), 404
 
 #read about one
@@ -63,18 +57,6 @@ def about_get_by_id(req: Request, about_id) -> Response:
 
     return jsonify({"message":'You do not have this about'}), 404
 
-#read search
-def about_get_by_search(req: Request) -> Response:
-    about_search = req.args.get('q').lower()
-
-    about_query = db.session.query(About).filter(About.about_id == About.about_id)\
-        .filter(db.or_(
-            db.func.lower(About.about_title).contains(about_search),
-            db.func.lower(About.about_info).contains(about_search)
-        )).all()
-
-    return jsonify({"message": "abouts found", "abouts": abouts_schema.dump(about_query)}), 200
-
 #read all
 def about_get_all(req: Request) -> Response:
     all_abouts = db.session.query(About).all()
@@ -90,7 +72,6 @@ def about_update(req: Request, about_id, auth_info) -> Response:
     if post_data:
         about_title = post_data.get('about_title')
         about_info = post_data.get('about_info')
-        about_id = post_data.get("about_id")
         active = post_data.get("active")
 
         if validate_uuid4(about_id) == False:

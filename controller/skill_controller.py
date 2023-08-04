@@ -19,7 +19,6 @@ def skill_add(req: Request,auth_info) -> Response:
     if post_data:
         skill_name = post_data.get('skill_name')
         skill_use = post_data.get('skill_use')
-        skill_id = post_data.get("skill_id")
         active = post_data.get("active")
 
         if auth_info.user.role not in ["admin"]:
@@ -31,19 +30,14 @@ def skill_add(req: Request,auth_info) -> Response:
         if active and active not in [True, False]:
             return jsonify({"error": "invalid"}), 400
 
-        if skill_id:
-            if not validate_uuid4(skill_id):
-                return jsonify({"message": 'not a valid skill_id'}), 400
+        new_skill = Skill.get_new_skill()
 
-            new_skill = Skill.get_new_skill()
+        populate_object(new_skill, post_data)
 
-            populate_object(new_skill, post_data)
+        db.session.add(new_skill)
+        db.session.commit()
 
-            db.session.add(new_skill)
-            db.session.commit()
-
-            return jsonify({"message": "skill created", "skill": skill_schema.dump(new_skill)}), 201
-        return jsonify({"message": "Skill id needed"}), 400
+        return jsonify({"message": "skill created", "skill": skill_schema.dump(new_skill)}), 201
     return jsonify({"message": 'no data'}), 404
 
 #read skill one
@@ -63,18 +57,6 @@ def skill_get_by_id(req: Request, skill_id) -> Response:
 
     return jsonify({"message":'You do not have this skill'}), 404
 
-#read search
-def skill_get_by_search(req: Request) -> Response:
-    skill_search = req.args.get('q').lower()
-
-    skill_query = db.session.query(Skill).filter(Skill.skill_id == Skill.skill_id)\
-        .filter(db.or_(
-            db.func.lower(Skill.skill_name).contains(skill_search),
-            db.func.lower(Skill.skill_use).contains(skill_search)
-        )).all()
-
-    return jsonify({"message": "skills found", "skills": skills_schema.dump(skill_query)}), 200
-
 #read all
 def skill_get_all(req: Request) -> Response:
     all_skills = db.session.query(Skill).all()
@@ -90,7 +72,6 @@ def skill_update(req: Request, skill_id, auth_info) -> Response:
     if post_data:
         skill_name = post_data.get('skill_name')
         skill_use = post_data.get('skill_use')
-        skill_id = post_data.get("skill_id")
         active = post_data.get("active")
 
         if validate_uuid4(skill_id) == False:

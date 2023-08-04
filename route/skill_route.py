@@ -14,11 +14,6 @@ def skill_add() -> Response:
 def skill_get_by_id(skill_id):
     return controller.skill_get_by_id(request, skill_id)
 
-#read-search
-@skill.route("/skill/search", methods=["GET"])
-def skill_get_by_search():
-    return controller.skill_get_by_search(request)
-
 #read-all
 @skill.route("/skill", methods=["GET"])
 def skill_get_all():

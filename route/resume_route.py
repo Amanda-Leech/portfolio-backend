@@ -14,11 +14,6 @@ def resume_add() -> Response:
 def resume_get_by_id(resume_id):
     return controller.resume_get_by_id(request, resume_id)
 
-#read-search
-@resume.route("/resume/search", methods=["GET"])
-def resume_get_by_search():
-    return controller.resume_get_by_search(request)
-
 #read-all
 @resume.route("/resume", methods=["GET"])
 def resume_get_all():

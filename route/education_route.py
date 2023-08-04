@@ -19,11 +19,6 @@ def education_get_all():
 def education_get_by_id(education_id):
     return controller.education_get_by_id(request, education_id)
 
-#read-search
-@education.route("/education/search", methods=["GET"])
-def education_get_by_search():
-    return controller.education_get_by_search(request)
-
 #update
 @education.route("/education/<education_id>", methods=["PUT"])
 def education_update(education_id):

@@ -20,7 +20,6 @@ def contact_add(req: Request,auth_info) -> Response:
         contact_name = post_data.get('contact_name')
         linked_in = post_data.get('linked_in')
         git_hub = post_data.get('git_hub')
-        contact_id = post_data.get("contact_id")
         phone = post_data.get("phone")
         email = post_data.get("email")
         address = post_data.get("address")
@@ -35,19 +34,14 @@ def contact_add(req: Request,auth_info) -> Response:
         if active and active not in [True, False]:
             return jsonify({"error": "invalid"}), 400
 
-        if contact_id:
-            if not validate_uuid4(contact_id):
-                return jsonify({"message": 'not a valid contact id'}), 400
+        new_contact = Contact.get_new_contact()
 
-            new_contact = Contact.get_new_contact()
+        populate_object(new_contact, post_data)
 
-            populate_object(new_contact, post_data)
+        db.session.add(new_contact)
+        db.session.commit()
 
-            db.session.add(new_contact)
-            db.session.commit()
-
-            return jsonify({"message": "contact created", "contact": contact_schema.dump(new_contact)}), 201
-        return jsonify({"message": "Contact id needed"}), 400
+        return jsonify({"message": "contact created", "contact": contact_schema.dump(new_contact)}), 201
     return jsonify({"message": 'no data'}), 404
 
 #read contact one
@@ -83,7 +77,6 @@ def contact_update(req: Request, contact_id, auth_info) -> Response:
         contact_name = post_data.get('contact_name')
         linked_in = post_data.get('linked_in')
         git_hub = post_data.get('git_hub')
-        contact_id = post_data.get("contact_id")
         phone = post_data.get("phone")
         email = post_data.get("email")
         address = post_data.get("address")

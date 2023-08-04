@@ -20,7 +20,6 @@ def education_add(req: Request,auth_info) -> Response:
         school_name = post_data.get('school_name')
         certificate = post_data.get('certificate')
         date_obtained = post_data.get('date_obtained')
-        education_id = post_data.get("education_id")
         active = post_data.get("active")
 
         if auth_info.user.role not in ["admin"]:
@@ -32,19 +31,14 @@ def education_add(req: Request,auth_info) -> Response:
         if active and active not in [True, False]:
             return jsonify({"error": "invalid"}), 400
 
-        if education_id:
-            if not validate_uuid4(education_id):
-                return jsonify({"message": 'not a valid education_id'}), 400
+        new_education = Education.get_new_education()
 
-            new_education = Education.get_new_education()
+        populate_object(new_education, post_data)
 
-            populate_object(new_education, post_data)
+        db.session.add(new_education)
+        db.session.commit()
 
-            db.session.add(new_education)
-            db.session.commit()
-
-            return jsonify({"message": "education created", "education": education_schema.dump(new_education)}), 201
-        return jsonify({"message": "Education id needed"}), 400
+        return jsonify({"message": "education created", "education": education_schema.dump(new_education)}), 201
     return jsonify({"message": 'no data'}), 404
 
 #read education one
@@ -64,18 +58,6 @@ def education_get_by_id(req: Request, education_id) -> Response:
 
     return jsonify({"message":'You do not have this education'}), 404
 
-#read search
-def education_get_by_search(req: Request) -> Response:
-    education_search = req.args.get('q').lower()
-
-    education_query = db.session.query(Education).filter(Education.education_id == Education.education_id)\
-        .filter(db.or_(
-            db.func.lower(Education.school_name).contains(education_search),
-            db.func.lower(Education.certificate).contains(education_search)
-        )).all()
-
-    return jsonify({"message": "educations found", "educations": educations_schema.dump(education_query)}), 200
-
 #read all
 def education_get_all(req: Request) -> Response:
     all_educations = db.session.query(Education).all()
@@ -92,7 +74,6 @@ def education_update(req: Request, education_id, auth_info) -> Response:
         school_name = post_data.get('school_name')
         certificate = post_data.get('certificate')
         date_obtained = post_data.get('date_obtained')
-        education_id = post_data.get("education_id")
         active = post_data.get("active")
 
         if validate_uuid4(education_id) == False:

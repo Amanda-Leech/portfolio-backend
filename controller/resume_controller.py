@@ -19,7 +19,6 @@ def resume_add(req: Request,auth_info) -> Response:
     if post_data:
         resume_title = post_data.get('resume_title')
         resume_info = post_data.get('resume_info')
-        resume_id = post_data.get("resume_id")
         active = post_data.get("active")
 
         if auth_info.user.role not in ["admin"]:
@@ -31,19 +30,14 @@ def resume_add(req: Request,auth_info) -> Response:
         if active and active not in [True, False]:
             return jsonify({"error": "invalid"}), 400
 
-        if resume_id:
-            if not validate_uuid4(resume_id):
-                return jsonify({"message": 'not a valid resume_id'}), 400
+        new_resume = Resume.get_new_resume()
 
-            new_resume = Resume.get_new_resume()
+        populate_object(new_resume, post_data)
 
-            populate_object(new_resume, post_data)
+        db.session.add(new_resume)
+        db.session.commit()
 
-            db.session.add(new_resume)
-            db.session.commit()
-
-            return jsonify({"message": "resume created", "resume": resume_schema.dump(new_resume)}), 201
-        return jsonify({"message": "Resume id needed"}), 400
+        return jsonify({"message": "resume created", "resume": resume_schema.dump(new_resume)}), 201
     return jsonify({"message": 'no data'}), 404
 
 #read resume one
@@ -63,18 +57,6 @@ def resume_get_by_id(req: Request, resume_id) -> Response:
 
     return jsonify({"message":'You do not have this resume'}), 404
 
-#read search
-def resume_get_by_search(req: Request) -> Response:
-    resume_search = req.args.get('q').lower()
-
-    resume_query = db.session.query(Resume).filter(Resume.resume_id == Resume.resume_id)\
-        .filter(db.or_(
-            db.func.lower(Resume.resume_title).contains(resume_search),
-            db.func.lower(Resume.resume_info).contains(resume_search)
-        )).all()
-
-    return jsonify({"message": "resumes found", "resumes": resumes_schema.dump(resume_query)}), 200
-
 #read all
 def resume_get_all(req: Request) -> Response:
     all_resumes = db.session.query(Resume).all()
@@ -90,7 +72,6 @@ def resume_update(req: Request, resume_id, auth_info) -> Response:
     if post_data:
         resume_title = post_data.get('resume_title')
         resume_info = post_data.get('resume_info')
-        resume_id = post_data.get("resume_id")
         active = post_data.get("active")
 
         if validate_uuid4(resume_id) == False:

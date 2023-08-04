@@ -20,7 +20,6 @@ def project_add(req: Request,auth_info) -> Response:
         project_url = post_data.get('project_url')
         project_title = post_data.get('project_title')
         project_info = post_data.get('project_info')
-        project_id = post_data.get("project_id")
         git_url = post_data.get("git_url")
         active = post_data.get("active")
 
@@ -33,19 +32,14 @@ def project_add(req: Request,auth_info) -> Response:
         if active and active not in [True, False]:
             return jsonify({"error": "invalid"}), 400
 
-        if project_id:
-            if not validate_uuid4(project_id):
-                return jsonify({"message": 'not a valid project id'}), 400
+        new_project = Project.get_new_project()
 
-            new_project = Project.get_new_project()
+        populate_object(new_project, post_data)
 
-            populate_object(new_project, post_data)
+        db.session.add(new_project)
+        db.session.commit()
 
-            db.session.add(new_project)
-            db.session.commit()
-
-            return jsonify({"message": "project created", "project": project_schema.dump(new_project)}), 201
-        return jsonify({"message": "Project id needed"}), 400
+        return jsonify({"message": "project created", "project": project_schema.dump(new_project)}), 201
     return jsonify({"message": 'no data'}), 404
 
 #read project one
@@ -65,18 +59,6 @@ def project_get_by_id(req: Request, project_id) -> Response:
 
     return jsonify({"message":'You do not have this project'}), 404
 
-#read search
-def project_get_by_search(req: Request) -> Response:
-    project_search = req.args.get('q').lower()
-
-    project_query = db.session.query(Project).filter(Project.project_id == Project.project_id)\
-        .filter(db.or_(
-            db.func.lower(Project.project_info).contains(project_search),
-            db.func.lower(Project.project_title).contains(project_search)
-        )).all()
-
-    return jsonify({"message": "projects found", "projects": projects_schema.dump(project_query)}), 200
-
 #read all
 def project_get_all(req: Request) -> Response:
     all_projects = db.session.query(Project).all()
@@ -93,7 +75,6 @@ def project_update(req: Request, project_id, auth_info) -> Response:
         project_url = post_data.get('project_url')
         project_title = post_data.get('project_title')
         project_info = post_data.get('project_info')
-        project_id = post_data.get("project_id")
         git_url = post_data.get("git_url")
         active = post_data.get("active")
 

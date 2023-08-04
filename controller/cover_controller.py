@@ -19,7 +19,6 @@ def cover_add(req: Request,auth_info) -> Response:
     if post_data:
         cover_title = post_data.get('cover_title')
         cover_info = post_data.get('cover_info')
-        cover_id = post_data.get("cover_id")
         active = post_data.get("active")
 
         if auth_info.user.role not in ["admin"]:
@@ -31,19 +30,15 @@ def cover_add(req: Request,auth_info) -> Response:
         if active and active not in [True, False]:
             return jsonify({"error": "invalid"}), 400
 
-        if cover_id:
-            if not validate_uuid4(cover_id):
-                return jsonify({"message": 'not a valid cover_id'}), 400
+        new_cover = Cover.get_new_cover()
 
-            new_cover = Cover.get_new_cover()
+        populate_object(new_cover, post_data)
 
-            populate_object(new_cover, post_data)
+        db.session.add(new_cover)
+        db.session.commit()
 
-            db.session.add(new_cover)
-            db.session.commit()
+        return jsonify({"message": "cover created", "cover": cover_schema.dump(new_cover)}), 201
 
-            return jsonify({"message": "cover created", "cover": cover_schema.dump(new_cover)}), 201
-        return jsonify({"message": "Cover id needed"}), 400
     return jsonify({"message": 'no data'}), 404
 
 #read cover one
@@ -63,18 +58,6 @@ def cover_get_by_id(req: Request, cover_id) -> Response:
 
     return jsonify({"message":'You do not have this cover'}), 404
 
-#read search
-def cover_get_by_search(req: Request) -> Response:
-    cover_search = req.args.get('q').lower()
-
-    cover_query = db.session.query(Cover).filter(Cover.cover_id == Cover.cover_id)\
-        .filter(db.or_(
-            db.func.lower(Cover.cover_title).contains(cover_search),
-            db.func.lower(Cover.cover_info).contains(cover_search)
-        )).all()
-
-    return jsonify({"message": "covers found", "covers": covers_schema.dump(cover_query)}), 200
-
 #read all
 def cover_get_all(req: Request) -> Response:
     all_covers = db.session.query(Cover).all()
@@ -90,7 +73,6 @@ def cover_update(req: Request, cover_id, auth_info) -> Response:
     if post_data:
         cover_title = post_data.get('cover_title')
         cover_info = post_data.get('cover_info')
-        cover_id = post_data.get("cover_id")
         active = post_data.get("active")
 
         if validate_uuid4(cover_id) == False:

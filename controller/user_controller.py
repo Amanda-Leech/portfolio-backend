@@ -75,7 +75,7 @@ def user_get_from_auth_token(req: Request, auth_info) -> Response:
 
 @authenticate
 def user_get_all(req: Request) -> Response:
-    all_users = db.session.query(User).order_by(User.last_name.asc()).order_by(User.first_name.asc()).all()
+    all_users = db.session.query(User).all()
 
     return jsonify({"message": "user results", "users": users_schema.dump(all_users)})
 
@@ -83,8 +83,6 @@ def user_get_all(req: Request) -> Response:
 @authenticate_return_auth
 def user_update(req: Request, user_id, auth_info) -> Response:
     post_data = req.get_json()
-    first_name = post_data.get("first_name")
-    last_name = post_data.get("last_name")
     role = post_data.get("role")
     email = post_data.get("email")
     password = post_data.get("password")
@@ -94,14 +92,6 @@ def user_update(req: Request, user_id, auth_info) -> Response:
 
     if not validate_user_id:
         return jsonify({"message": "invalid id"}), 400
-
-    if first_name:
-        if first_name.isspace() == True:
-            return jsonify({'message': 'invalid entry'}), 403
-
-    if last_name:
-        if last_name.isspace() == True:
-            return jsonify({'message': 'invalid entry'}), 403
 
     if password != None:
         if ' ' in password:
@@ -120,20 +110,6 @@ def user_update(req: Request, user_id, auth_info) -> Response:
         if user_data.active == True or active == True:
             if auth_info.user.role != 'admin' and user_data.role == 'admin':
                 return jsonify({"message": "admins cannot update admins"}), 401
-
-            if role:
-                if role == 'admin' and auth_info.user.role == 'admin':
-                    return jsonify({"message": "admins cannot update admins to admin"}), 401
-
-                if auth_info.user.role not in ['admin', 'admin']:
-                    return jsonify({"message": "unauthorized"}), 401
-
-                if auth_info.user.user_id == user_data.user_id:
-                    return jsonify({"message": "user cannot change own role"}), 401
-
-                if role == 'admin':
-                    if auth_info.user.role != 'admin':
-                        return jsonify({"message": "unauthorized"}), 401
 
             if email:
                 if email.lower() != user_data.email:
@@ -175,7 +151,7 @@ def user_delete(req: Request, user_id, auth_info) -> Response:
 
 
 @authenticate_return_auth
-def user_status_update(req: Request, user_id, auth_info) -> Response:
+def user_activity(req: Request, user_id, auth_info) -> Response:
     if validate_uuid4(user_id) == False:
         return jsonify({"message": "invalid id"}), 400
 
@@ -199,17 +175,3 @@ def user_status_update(req: Request, user_id, auth_info) -> Response:
     else:
          if auth_info.user.role == 'user':
                 return jsonify({"message": "unauthorized"}), 401
-         
-@authenticate
-def user_get_by_search(req: Request) -> Response:
-    user_search= req.args.get('q').lower()
- 
-    user_query = db.session.query(User).filter(db.or_(
-        db.func.lower(User.first_name).contains(user_search),
-        db.func.lower(User.last_name).contains(user_search),
-        db.func.lower(User.email).contains(user_search),
-        db.func.lower(User.first_name + " " +
-            User.last_name).contains(user_search),
-        )).order_by(User.last_name.asc()).order_by(User.first_name.asc()).all()
-
-    return jsonify({"message": "users found", "users": users_schema.dump(user_query)}), 200

@@ -17,7 +17,7 @@ class Resume(db.Model):
         self.resume_info = resume_info
         self.active = active
 
-    def get_new_resumee():
+    def get_new_resume():
         return Resume("", "", True)
 
 

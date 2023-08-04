@@ -19,11 +19,6 @@ def project_get_all():
 def project_get_by_id(project_id):
     return controller.project_get_by_id(request, project_id)
 
-#read-search
-@project.route("/project/search", methods=["GET"])
-def project_get_by_search():
-    return controller.project_get_by_search(request)
-
 #update
 @project.route("/project/<project_id>", methods=["PUT"])
 def project_update(project_id):
