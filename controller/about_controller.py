@@ -53,7 +53,7 @@ def about_get_by_id(req: Request, about_id) -> Response:
     if about_data:
         about_dict = about_schema.dump(about_data)
 
-        return jsonify({"message": "success", "about": about_dict}), 200
+        return jsonify(about_dict), 200
 
     return jsonify({"message":'You do not have this about'}), 404
 
@@ -62,7 +62,7 @@ def about_get_all(req: Request) -> Response:
     all_abouts = db.session.query(About).all()
     about_list = abouts_schema.dump(all_abouts)
 
-    return jsonify({"message": "success", "abouts": about_list}), 200
+    return jsonify(about_list), 200
 
 #update about
 @authenticate_return_auth

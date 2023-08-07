@@ -64,7 +64,7 @@ def project_get_all(req: Request) -> Response:
     all_projects = db.session.query(Project).all()
     project_list = projects_schema.dump(all_projects)
 
-    return jsonify({"message": "success", "projects": project_list}), 200
+    return jsonify(project_list), 200
 
 #update project
 @authenticate_return_auth

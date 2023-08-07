@@ -63,7 +63,7 @@ def cover_get_all(req: Request) -> Response:
     all_covers = db.session.query(Cover).all()
     cover_list = covers_schema.dump(all_covers)
 
-    return jsonify({"message": "success", "covers": cover_list}), 200
+    return jsonify(cover_list), 200
 
 #update cover
 @authenticate_return_auth

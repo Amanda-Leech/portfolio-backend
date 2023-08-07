@@ -62,7 +62,7 @@ def skill_get_all(req: Request) -> Response:
     all_skills = db.session.query(Skill).all()
     skill_list = skills_schema.dump(all_skills)
 
-    return jsonify({"message": "success", "skills": skill_list}), 200
+    return jsonify(skill_list), 200
 
 #update skill
 @authenticate_return_auth

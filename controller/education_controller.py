@@ -63,7 +63,7 @@ def education_get_all(req: Request) -> Response:
     all_educations = db.session.query(Education).all()
     education_list = educations_schema.dump(all_educations)
 
-    return jsonify({"message": "success", "educations": education_list}), 200
+    return jsonify(education_list), 200
 
 #update education
 @authenticate_return_auth

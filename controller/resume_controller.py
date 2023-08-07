@@ -62,7 +62,7 @@ def resume_get_all(req: Request) -> Response:
     all_resumes = db.session.query(Resume).all()
     resume_list = resumes_schema.dump(all_resumes)
 
-    return jsonify({"message": "success", "resumes": resume_list}), 200
+    return jsonify(resume_list), 200
 
 #update resume
 @authenticate_return_auth
