@@ -54,7 +54,7 @@ def education_get_by_id(req: Request, education_id) -> Response:
     if education_data:
         education_dict = education_schema.dump(education_data)
 
-        return jsonify({"message": "success", "education": education_dict}), 200
+        return jsonify([education_dict]), 200
 
     return jsonify({"message":'You do not have this education'}), 404
 

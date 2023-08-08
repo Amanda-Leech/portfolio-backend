@@ -53,7 +53,7 @@ def about_get_by_id(req: Request, about_id) -> Response:
     if about_data:
         about_dict = about_schema.dump(about_data)
 
-        return jsonify(about_dict), 200
+        return jsonify([about_dict]), 200
 
     return jsonify({"message":'You do not have this about'}), 404
 

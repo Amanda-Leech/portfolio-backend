@@ -57,7 +57,7 @@ def contact_get_by_id(req: Request, contact_id) -> Response:
     if contact_data:
         contact_dict = contact_schema.dump(contact_data)
 
-        return jsonify({"message": "success", "contact": contact_dict}), 200
+        return jsonify([contact_dict]), 200
 
     return jsonify({"message":'You do not have this contact'}), 404
 

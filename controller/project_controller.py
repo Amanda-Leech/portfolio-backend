@@ -55,7 +55,7 @@ def project_get_by_id(req: Request, project_id) -> Response:
     if project_data:
         project_dict = project_schema.dump(project_data)
 
-        return jsonify({"message": "success", "project": project_dict}), 200
+        return jsonify([project_dict]), 200
 
     return jsonify({"message":'You do not have this project'}), 404
 

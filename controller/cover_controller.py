@@ -54,7 +54,7 @@ def cover_get_by_id(req: Request, cover_id) -> Response:
     if cover_data:
         cover_dict = cover_schema.dump(cover_data)
 
-        return jsonify({"message": "success", "cover": cover_dict}), 200
+        return jsonify([cover_dict]), 200
 
     return jsonify({"message":'You do not have this cover'}), 404
 

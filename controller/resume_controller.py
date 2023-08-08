@@ -53,7 +53,7 @@ def resume_get_by_id(req: Request, resume_id) -> Response:
     if resume_data:
         resume_dict = resume_schema.dump(resume_data)
 
-        return jsonify({"message": "success", "resume": resume_dict}), 200
+        return jsonify([resume_dict]), 200
 
     return jsonify({"message":'You do not have this resume'}), 404
 

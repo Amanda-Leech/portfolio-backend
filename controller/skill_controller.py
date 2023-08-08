@@ -53,7 +53,7 @@ def skill_get_by_id(req: Request, skill_id) -> Response:
     if skill_data:
         skill_dict = skill_schema.dump(skill_data)
 
-        return jsonify({"message": "success", "skill": skill_dict}), 200
+        return jsonify([skill_dict]), 200
 
     return jsonify({"message":'You do not have this skill'}), 404
 
