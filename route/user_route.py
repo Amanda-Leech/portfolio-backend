@@ -29,8 +29,8 @@ def user_update(user_id):
 def user_delete(user_id):
     return controller.user_delete(request, user_id)
 
-#activity
-@user.route("/user/activity/<user_id>", methods=["PATCH"])
-def user_activity(user_id):
-    return controller.user_activity(request, user_id)
+#archive
+@user.route("/user/archive/<user_id>", methods=["PATCH"])
+def user_archive(user_id):
+    return controller.user_archive(request, user_id)
 

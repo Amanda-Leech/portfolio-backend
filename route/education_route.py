@@ -29,8 +29,8 @@ def education_update(education_id):
 def education_delete(education_id):
     return controller.education_delete(request, education_id)
 
-#activity
-@education.route("/education/activity/<education_id>", methods=["PATCH"])
-def education_activity(education_id):
-    return controller.education_activity(request, education_id)
+#archive
+@education.route("/education/archive/<education_id>", methods=["PATCH"])
+def education_archive(education_id):
+    return controller.education_archive(request, education_id)
 

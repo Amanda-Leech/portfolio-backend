@@ -7,3 +7,4 @@ from .project_route import project
 from .resume_route import resume
 from .skill_route import skill
 from .user_route import user
+from .message_route import message

@@ -29,8 +29,8 @@ def cover_update(cover_id):
 def cover_delete(cover_id):
     return controller.cover_delete(request, cover_id)
 
-#activity
-@cover.route("/cover/activity/<cover_id>", methods=["PATCH"])
-def cover_activity(cover_id):
-    return controller.cover_activity(request, cover_id)
+#archive
+@cover.route("/cover/archive/<cover_id>", methods=["PATCH"])
+def cover_archive(cover_id):
+    return controller.cover_archive(request, cover_id)
 

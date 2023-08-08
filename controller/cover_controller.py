@@ -124,9 +124,9 @@ def cover_delete(req: Request, cover_id, auth_info) -> Response:
 
     return jsonify({"message":'You don\'t have this cover'}), 404
 
-#activity cover
+#archive cover
 @authenticate_return_auth
-def cover_activity(req: Request, cover_id, auth_info) -> Response:
+def cover_archive(req: Request, cover_id, auth_info) -> Response:
     if not validate_uuid4(cover_id):
         return jsonify({"message": "invalid cover id"}), 400
 
@@ -140,5 +140,5 @@ def cover_activity(req: Request, cover_id, auth_info) -> Response:
         cover_data.active = not cover_data.active
         db.session.commit()
 
-        return jsonify({"message": "cover activity updated", "cover": cover_schema.dump(cover_data)}), 200
+        return jsonify({"message": "cover archive updated", "cover": cover_schema.dump(cover_data)}), 200
     return jsonify({"message": "You don't have this cover"}), 404

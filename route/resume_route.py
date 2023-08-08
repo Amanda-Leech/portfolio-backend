@@ -29,9 +29,9 @@ def resume_update(resume_id):
 def resume_delete(resume_id):
     return controller.resume_delete(request, resume_id)
 
-#activity
-@resume.route("/resume/activity/<resume_id>", methods=["PATCH"])
-def resume_activity(resume_id):
-    return controller.resume_activity(request, resume_id)
+#archive
+@resume.route("/resume/archive/<resume_id>", methods=["PATCH"])
+def resume_archive(resume_id):
+    return controller.resume_archive(request, resume_id)
 
 

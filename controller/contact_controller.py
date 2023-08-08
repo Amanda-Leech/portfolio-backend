@@ -131,9 +131,9 @@ def contact_delete(req: Request, contact_id, auth_info) -> Response:
 
     return jsonify({"message":'You don\'t have this contact'}), 404
 
-#activity contact
+#archive contact
 @authenticate_return_auth
-def contact_activity(req: Request, contact_id, auth_info) -> Response:
+def contact_archive(req: Request, contact_id, auth_info) -> Response:
     if not validate_uuid4(contact_id):
         return jsonify({"message": "invalid contact id"}), 400
 
@@ -147,5 +147,5 @@ def contact_activity(req: Request, contact_id, auth_info) -> Response:
         contact_data.active = not contact_data.active
         db.session.commit()
 
-        return jsonify({"message": "contact activity updated", "contact": contact_schema.dump(contact_data)}), 200
+        return jsonify({"message": "contact archive updated", "contact": contact_schema.dump(contact_data)}), 200
     return jsonify({"message": "You don't have this contact"}), 404

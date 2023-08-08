@@ -29,10 +29,10 @@ def contact_update(contact_id):
 def contact_delete(contact_id):
     return controller.contact_delete(request, contact_id)
 
-#activity
-@contact.route("/contact/activity/<contact_id>", methods=["PATCH"])
-def contact_activity(contact_id):
-    return controller.contact_activity(request, contact_id)
+#archive
+@contact.route("/contact/archive/<contact_id>", methods=["PATCH"])
+def contact_archive(contact_id):
+    return controller.contact_archive(request, contact_id)
 
 
 

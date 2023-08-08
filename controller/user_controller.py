@@ -151,7 +151,7 @@ def user_delete(req: Request, user_id, auth_info) -> Response:
 
 
 @authenticate_return_auth
-def user_activity(req: Request, user_id, auth_info) -> Response:
+def user_archive(req: Request, user_id, auth_info) -> Response:
     if validate_uuid4(user_id) == False:
         return jsonify({"message": "invalid id"}), 400
 

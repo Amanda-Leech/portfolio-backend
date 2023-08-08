@@ -29,7 +29,7 @@ def about_update(about_id):
 def about_delete(about_id):
     return controller.about_delete(request, about_id)
 
-#activity
-@about.route("/about/activity/<about_id>", methods=["PATCH"])
-def about_activity(about_id):
-    return controller.about_activity(request, about_id)
+#archive
+@about.route("/about/archive/<about_id>", methods=["PATCH"])
+def about_archive(about_id):
+    return controller.about_archive(request, about_id)

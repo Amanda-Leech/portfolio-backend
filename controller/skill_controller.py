@@ -123,9 +123,9 @@ def skill_delete(req: Request, skill_id, auth_info) -> Response:
 
     return jsonify({"message":'You don\'t have this skill'}), 404
 
-#activity skill
+#archive skill
 @authenticate_return_auth
-def skill_activity(req: Request, skill_id, auth_info) -> Response:
+def skill_archive(req: Request, skill_id, auth_info) -> Response:
     if not validate_uuid4(skill_id):
         return jsonify({"message": "invalid skill id"}), 400
 
@@ -139,5 +139,5 @@ def skill_activity(req: Request, skill_id, auth_info) -> Response:
         skill_data.active = not skill_data.active
         db.session.commit()
 
-        return jsonify({"message": "skill activity updated", "skill": skill_schema.dump(skill_data)}), 200
+        return jsonify({"message": "skill archive updated", "skill": skill_schema.dump(skill_data)}), 200
     return jsonify({"message": "You don't have this skill"}), 404

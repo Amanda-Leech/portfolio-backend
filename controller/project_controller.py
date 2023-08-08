@@ -127,9 +127,9 @@ def project_delete(req: Request, project_id, auth_info) -> Response:
 
     return jsonify({"message":'You don\'t have this project'}), 404
 
-#activity project
+#archive project
 @authenticate_return_auth
-def project_activity(req: Request, project_id, auth_info) -> Response:
+def project_archive(req: Request, project_id, auth_info) -> Response:
     if not validate_uuid4(project_id):
         return jsonify({"message": "invalid project id"}), 400
 
@@ -143,5 +143,5 @@ def project_activity(req: Request, project_id, auth_info) -> Response:
         project_data.active = not project_data.active
         db.session.commit()
 
-        return jsonify({"message": "project activity updated", "project": project_schema.dump(project_data)}), 200
+        return jsonify({"message": "project archive updated", "project": project_schema.dump(project_data)}), 200
     return jsonify({"message": "You don't have this project"}), 404

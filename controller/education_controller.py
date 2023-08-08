@@ -125,9 +125,9 @@ def education_delete(req: Request, education_id, auth_info) -> Response:
 
     return jsonify({"message":'You don\'t have this education'}), 404
 
-#activity education
+#archive education
 @authenticate_return_auth
-def education_activity(req: Request, education_id, auth_info) -> Response:
+def education_archive(req: Request, education_id, auth_info) -> Response:
     if not validate_uuid4(education_id):
         return jsonify({"message": "invalid education id"}), 400
 
@@ -141,5 +141,5 @@ def education_activity(req: Request, education_id, auth_info) -> Response:
         education_data.active = not education_data.active
         db.session.commit()
 
-        return jsonify({"message": "education activity updated", "education": education_schema.dump(education_data)}), 200
+        return jsonify({"message": "education archive updated", "education": education_schema.dump(education_data)}), 200
     return jsonify({"message": "You don't have this education"}), 404

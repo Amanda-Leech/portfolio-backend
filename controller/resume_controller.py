@@ -123,9 +123,9 @@ def resume_delete(req: Request, resume_id, auth_info) -> Response:
 
     return jsonify({"message":'You don\'t have this resume'}), 404
 
-#activity resume
+#archive resume
 @authenticate_return_auth
-def resume_activity(req: Request, resume_id, auth_info) -> Response:
+def resume_archive(req: Request, resume_id, auth_info) -> Response:
     if not validate_uuid4(resume_id):
         return jsonify({"message": "invalid resume id"}), 400
 
@@ -139,5 +139,5 @@ def resume_activity(req: Request, resume_id, auth_info) -> Response:
         resume_data.active = not resume_data.active
         db.session.commit()
 
-        return jsonify({"message": "resume activity updated", "resume": resume_schema.dump(resume_data)}), 200
+        return jsonify({"message": "resume archive updated", "resume": resume_schema.dump(resume_data)}), 200
     return jsonify({"message": "You don't have this resume"}), 404

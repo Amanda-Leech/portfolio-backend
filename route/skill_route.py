@@ -29,8 +29,8 @@ def skill_update(skill_id):
 def skill_delete(skill_id):
     return controller.skill_delete(request, skill_id)
 
-#activity
-@skill.route("/skill/activity/<skill_id>", methods=["PATCH"])
-def skill_activity(skill_id):
-    return controller.skill_activity(request, skill_id)
+#archive
+@skill.route("/skill/archive/<skill_id>", methods=["PATCH"])
+def skill_archive(skill_id):
+    return controller.skill_archive(request, skill_id)
 

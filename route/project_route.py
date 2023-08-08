@@ -29,9 +29,9 @@ def project_update(project_id):
 def project_delete(project_id):
     return controller.project_delete(request, project_id)
 
-#activity
-@project.route("/project/activity/<project_id>", methods=["PATCH"])
-def project_activity(project_id):
-    return controller.project_activity(request, project_id)
+#archive
+@project.route("/project/archive/<project_id>", methods=["PATCH"])
+def project_archive(project_id):
+    return controller.project_archive(request, project_id)
 
 

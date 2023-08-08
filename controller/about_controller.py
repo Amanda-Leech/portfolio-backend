@@ -123,9 +123,9 @@ def about_delete(req: Request, about_id, auth_info) -> Response:
 
     return jsonify({"message":'You don\'t have this about'}), 404
 
-#activity about
+#archive about
 @authenticate_return_auth
-def about_activity(req: Request, about_id, auth_info) -> Response:
+def about_archive(req: Request, about_id, auth_info) -> Response:
     if not validate_uuid4(about_id):
         return jsonify({"message": "invalid about id"}), 400
 
@@ -139,5 +139,5 @@ def about_activity(req: Request, about_id, auth_info) -> Response:
         about_data.active = not about_data.active
         db.session.commit()
 
-        return jsonify({"message": "about activity updated", "about": about_schema.dump(about_data)}), 200
+        return jsonify({"message": "about archive updated", "about": about_schema.dump(about_data)}), 200
     return jsonify({"message": "You don't have this about"}), 404
