@@ -9,7 +9,7 @@ class Message(db.Model):
     __tablename__ = "Message"
     message_id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
     Message_name = db.Column(db.String())
-    Message_email = db.Column(db.String() nullable=False)
+    Message_email = db.Column(db.String(), nullable=False)
     Message_subject = db.Column(db.String())
     Message = db.Column(db.String())
     active = db.Column(db.Boolean(), nullable=False, default=True)
