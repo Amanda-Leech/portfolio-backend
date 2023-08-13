@@ -20,7 +20,7 @@ def skill_get_all():
     return controller.skill_get_all(request)
 
 #update
-@skill.route("/skill/<skill_id>", methods=["PUT"])
+@skill.route("/skill/<skill_id>", methods=["POST"])
 def skill_update(skill_id):
     return controller.skill_update(request, skill_id)
 

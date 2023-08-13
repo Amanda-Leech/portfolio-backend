@@ -20,7 +20,7 @@ def project_get_by_id(project_id):
     return controller.project_get_by_id(request, project_id)
 
 #update
-@project.route("/project/<project_id>", methods=["PUT"])
+@project.route("/project/<project_id>", methods=["POST"])
 def project_update(project_id):
     return controller.project_update(request, project_id)
 

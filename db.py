@@ -3,7 +3,7 @@ from flask_marshmallow import Marshmallow
 from flask import Flask
 from sqlalchemy import engine, create_engine
 
-from lib.loaders import load_models
+from loaders import load_models
 
 import os
 
@@ -29,7 +29,7 @@ db = SQLAlchemy()
 ma = Marshmallow()
 basedir = os.path.abspath(os.path.dirname(__file__))
 db_host = '127.0.0.1:5432'
-db_name = 'certitrack'
+db_name = 'portfolio'
 engine = create_engine(f'postgresql://{db_host}/{db_name}')
 engine.connect()
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_host}/{db_name}'

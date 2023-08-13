@@ -6,6 +6,12 @@ from flask_marshmallow import Marshmallow
 from db import db, init_db
 from model.user import User
 from lib.admin import create_admin
+from lib.create_about import create_about
+from lib.contact_create import create_contact
+from lib.cover_create import create_cover
+from lib.education_create import create_education
+from lib.project_create import create_project
+from lib.skill_create import create_skill
 from os.path import abspath, dirname, join
 import route
 import controller
@@ -14,11 +20,17 @@ def create_all():
     with app.app_context():
         db.create_all()
         create_admin()
+        create_about()
+        create_contact()
+        create_cover()
+        create_education()
+        create_project()
+        create_skill()
 
 def create_app(config_file=None):
     app = Flask(__name__)
     database_host = "127.0.0.1:5432"
-    database_name = "profile"
+    database_name = "portfolio"
     engine = create_engine(f'postgresql://{database_host}/{database_name}')
     engine.connect()
     app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{database_host}/{database_name}'
@@ -65,8 +77,9 @@ app.register_blueprint(route.project)
 app.register_blueprint(route.resume)
 app.register_blueprint(route.skill)
 app.register_blueprint(route.user)
+app.register_blueprint(route.message)
 
-@app.route('/user', methods=['PUT'])
+@app.route('/user', methods=['POST'])
 def user_update_multi():
     return controller.user_update_multi(request)
 

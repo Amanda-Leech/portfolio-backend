@@ -20,7 +20,7 @@ def user_get_by_id(user_id):
     return controller.user_get_by_id(request, user_id)
 
 #update
-@user.route("/user/<user_id>", methods=["PUT"])
+@user.route("/user/<user_id>", methods=["POST"])
 def user_update(user_id):
     return controller.user_update(request, user_id)
 

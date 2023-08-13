@@ -12,8 +12,7 @@ from model.message import Message, message_schema, messages_schema
 
 
 #create message
-@authenticate_return_auth
-def message_add(req: Request,auth_info) -> Response:
+def message_add(req: Request) -> Response:
     post_data = req.get_json()
 
     if post_data:
@@ -24,11 +23,11 @@ def message_add(req: Request,auth_info) -> Response:
         address = post_data.get("address")
         active = post_data.get("active")
 
-        if auth_info.user.role not in ["admin"]:
-            return jsonify({"message": "not authorized"}), 401
+        # if auth_info.user.role not in ["admin"]:
+        #     return jsonify({"message": "not authorized"}), 401
 
-        if not message_email:
-            return jsonify({"message" : "Email required"}), 400
+        # if not message_email:
+        #     return jsonify({"message" : "Email required"}), 400
 
         if active and active not in [True, False]:
             return jsonify({"error": "invalid"}), 400
@@ -61,11 +60,15 @@ def message_get_by_id(req: Request, message_id) -> Response:
     return jsonify({"message":'You do not have this message'}), 404
 
 #read all
+# @authenticate_return_auth
 def message_get_all(req: Request) -> Response:
     all_messages = db.session.query(Message).all()
     message_list = messages_schema.dump(all_messages)
 
-    return jsonify([message_list]), 200
+    # if auth_info.user.role not in ["admin"]:
+    #     return jsonify({"message": "unauthorized"}), 401
+
+    return jsonify(message_list), 200
 
 #update message
 @authenticate_return_auth

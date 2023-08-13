@@ -45,14 +45,14 @@ def contact_add(req: Request,auth_info) -> Response:
     return jsonify({"message": 'no data'}), 404
 
 #read contact one
-def contact_get_by_id(req: Request, contact_id) -> Response:
-    contact_id = contact_id.strip()
+def contact_get_by_contact_name(req: Request, contact_name) -> Response:
+    contact_name = contact_name.strip()
 
-    if validate_uuid4(contact_id) == False:
-        return jsonify({"message": "invalid contact id"}), 400
+    # if validate_uuid4(contact_id) == False:
+    #     return jsonify({"message": "invalid contact id"}), 400
 
     contact_data = db.session.query(Contact).filter(
-        Contact.contact_id == contact_id).first()
+        Contact.contact_name == contact_name).first()
 
     if contact_data:
         contact_dict = contact_schema.dump(contact_data)
@@ -69,8 +69,8 @@ def contact_get_all(req: Request) -> Response:
     return jsonify({"message": "success", "contacts": contact_list}), 200
 
 #update contact
-@authenticate_return_auth
-def contact_update(req: Request, contact_id, auth_info) -> Response:
+# @authenticate_return_auth
+def contact_update(req: Request, contact_name) -> Response:
     post_data = req.get_json()
 
     if post_data:
@@ -82,25 +82,25 @@ def contact_update(req: Request, contact_id, auth_info) -> Response:
         address = post_data.get("address")
         active = post_data.get("active")
 
-        if validate_uuid4(contact_id) == False:
-            return jsonify({"message": "invalid contact id"}), 400
+        # if validate_uuid4(contact_id) == False:
+        #     return jsonify({"message": "invalid contact id"}), 400
 
-        if auth_info.user.role not in ["admin"]:
-            return jsonify({"message": "unauthorized"}), 401
+        # if auth_info.user.role not in ["admin"]:
+        #     return jsonify({"message": "unauthorized"}), 401
 
         contact_data = db.session.query(Contact).filter(
-            Contact.contact_id == contact_id).first()
+            Contact.contact_name == contact_name).first()
         
-        if bool(contact_name)== False or bool(phone)==False or bool(email)==False:
+        if bool(phone)==False or bool(email)==False:
             if contact_name== "" or phone == "" or email == "":
                 return jsonify({"message" : "Name, phone and email required"}), 400
           
         if not contact_data:
             return jsonify({"message": "contact not found"}), 404
 
-        if contact_id:
-            if not validate_uuid4(contact_id):
-                return jsonify({"message": "invalid contact id"}), 400
+        # if contact_id:
+        #     if not validate_uuid4(contact_id):
+        #         return jsonify({"message": "invalid contact id"}), 400
 
         if active and type(active) != bool:
             return jsonify({"message": "please provide a valid active value"}), 400

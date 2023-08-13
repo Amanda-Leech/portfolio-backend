@@ -41,14 +41,14 @@ def about_add(req: Request,auth_info) -> Response:
     return jsonify({"message": 'no data'}), 404
 
 #read about one
-def about_get_by_id(req: Request, about_id) -> Response:
-    about_id = about_id.strip()
+def about_get_by_title(req: Request, about_title) -> Response:
+    about_title = about_title.strip()
 
-    if validate_uuid4(about_id) == False:
-        return jsonify({"message": "invalid about id"}), 400
+    # if validate_uuid4(about_id) == False:
+    #     return jsonify({"message": "invalid about id"}), 400
 
     about_data = db.session.query(About).filter(
-        About.about_id == about_id).first()
+        About.about_title == about_title).first()
 
     if about_data:
         about_dict = about_schema.dump(about_data)
@@ -65,8 +65,8 @@ def about_get_all(req: Request) -> Response:
     return jsonify(about_list), 200
 
 #update about
-@authenticate_return_auth
-def about_update(req: Request, about_id, auth_info) -> Response:
+# @authenticate_return_auth
+def about_update(req: Request, about_title) -> Response:
     post_data = req.get_json()
 
     if post_data:
@@ -74,25 +74,25 @@ def about_update(req: Request, about_id, auth_info) -> Response:
         about_info = post_data.get('about_info')
         active = post_data.get("active")
 
-        if validate_uuid4(about_id) == False:
-            return jsonify({"message": "invalid about id"}), 400
+        # if validate_uuid4(about_id) == False:
+        #     return jsonify({"message": "invalid about id"}), 400
 
-        if auth_info.user.role not in ["admin"]:
-            return jsonify({"message": "unauthorized"}), 401
+        # if auth_info.user.role not in ["admin"]:
+        #     return jsonify({"message": "unauthorized"}), 401
 
         about_data = db.session.query(About).filter(
-            About.about_id == about_id).first()
+            About.about_title == about_title).first()
         
         if bool(about_title)== False or bool(about_info)==False:
             if about_title== "" or about_info == "":
-                return jsonify({"message" : "About and use required"}), 400
+                return jsonify({"message" : "Title and info required"}), 400
           
         if not about_data:
             return jsonify({"message": "about not found"}), 404
 
-        if about_id:
-            if not validate_uuid4(about_id):
-                return jsonify({"message": "invalid about id"}), 400
+        # if about_id:
+        #     if not validate_uuid4(about_id):
+        #         return jsonify({"message": "invalid about id"}), 400
 
         if active and type(active) != bool:
             return jsonify({"message": "please provide a valid active value"}), 400

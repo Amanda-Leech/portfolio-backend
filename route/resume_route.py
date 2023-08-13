@@ -20,7 +20,7 @@ def resume_get_all():
     return controller.resume_get_all(request)
 
 #update
-@resume.route("/resume/<resume_id>", methods=["PUT"])
+@resume.route("/resume/<resume_id>", methods=["POST"])
 def resume_update(resume_id):
     return controller.resume_update(request, resume_id)
 

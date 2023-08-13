@@ -5,8 +5,8 @@ import uuid
 from flask_bcrypt import check_password_hash, generate_password_hash
 from db import db
 from util.validate_uuid4 import validate_uuid4
-from lib.authenticate import authenticate_return_auth
-from model.auth import Auth, auth_schema
+from lib.authenticate import authenticate_return_auth, authenticate
+from model.auth import Auth, auth_schema, auths_schema
 from model.user import User, user_schema
 
 auto_login_token_clean = True
@@ -39,7 +39,7 @@ def auth_add(req: Request) -> Response:
                 for token in auth:
                     db.session.delete(token)
 
-            auth_data = Auth(user_data.user_id, expiration_datetime)
+            auth_data = Auth(user_data.user_id, expiration_datetime, now_datetime)
             db.session.add(auth_data)
 
         else:
@@ -61,3 +61,17 @@ def auth_remove(req: Request, auth_info) -> Response:
             return jsonify("User logged out"), 200
         except:
             return jsonify("Could not delete session"), 500
+        
+# @authenticate        
+# def auth_get_all(req: Request) -> Response:
+#     all_auth = db.session.query(Auth).first()
+#     # auth_list = auth_schema.dump(all_auth)
+
+#     return jsonify({"loggedInStatus": True}), 200
+
+
+def auth_get(req: Request) -> Response:
+    all_auth = db.session.query(Auth).all()
+    auth_list = auths_schema.dump(all_auth)
+
+    return jsonify(auth_list), 200

@@ -42,14 +42,14 @@ def cover_add(req: Request,auth_info) -> Response:
     return jsonify({"message": 'no data'}), 404
 
 #read cover one
-def cover_get_by_id(req: Request, cover_id) -> Response:
-    cover_id = cover_id.strip()
+def cover_get_by_cover_title(req: Request, cover_title) -> Response:
+    cover_title = cover_title.strip()
 
-    if validate_uuid4(cover_id) == False:
-        return jsonify({"message": "invalid cover id"}), 400
+    # if validate_uuid4(cover_id) == False:
+    #     return jsonify({"message": "invalid cover id"}), 400
 
     cover_data = db.session.query(Cover).filter(
-        Cover.cover_id == cover_id).first()
+        Cover.cover_title == cover_title).first()
 
     if cover_data:
         cover_dict = cover_schema.dump(cover_data)
@@ -66,8 +66,8 @@ def cover_get_all(req: Request) -> Response:
     return jsonify(cover_list), 200
 
 #update cover
-@authenticate_return_auth
-def cover_update(req: Request, cover_id, auth_info) -> Response:
+# @authenticate_return_auth
+def cover_update(req: Request, cover_title) -> Response:
     post_data = req.get_json()
 
     if post_data:
@@ -75,25 +75,25 @@ def cover_update(req: Request, cover_id, auth_info) -> Response:
         cover_info = post_data.get('cover_info')
         active = post_data.get("active")
 
-        if validate_uuid4(cover_id) == False:
-            return jsonify({"message": "invalid cover id"}), 400
+        # if validate_uuid4(cover_id) == False:
+        #     return jsonify({"message": "invalid cover id"}), 400
 
-        if auth_info.user.role not in ["admin"]:
-            return jsonify({"message": "unauthorized"}), 401
+        # if auth_info.user.role not in ["admin"]:
+        #     return jsonify({"message": "unauthorized"}), 401
 
         cover_data = db.session.query(Cover).filter(
-            Cover.cover_id == cover_id).first()
+            Cover.cover_title == cover_title).first()
         
         if bool(cover_title)== False or bool(cover_info)==False:
             if cover_title== "" or cover_info == "":
-                return jsonify({"message" : "Cover and use required"}), 400
+                return jsonify({"message" : "Cover and info required"}), 400
           
         if not cover_data:
             return jsonify({"message": "cover not found"}), 404
 
-        if cover_id:
-            if not validate_uuid4(cover_id):
-                return jsonify({"message": "invalid cover id"}), 400
+        # if cover_id:
+        #     if not validate_uuid4(cover_id):
+        #         return jsonify({"message": "invalid cover id"}), 400
 
         if active and type(active) != bool:
             return jsonify({"message": "please provide a valid active value"}), 400
