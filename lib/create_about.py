@@ -1,4 +1,4 @@
-from flask_bcrypt import generate_password_hash
+# from flask_bcrypt import generate_password_hash
 from db import db
 from model.about import About
 

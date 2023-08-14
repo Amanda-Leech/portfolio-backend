@@ -8,8 +8,8 @@ from db import db
 class Skill(db.Model):
     __tablename__ = "Skill"
     skill_id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
-    skill_name = db.Column(db.String(), nullable=False, unique=True)
-    skill_use = db.Column(db.String(), nullable=False, unique=True)
+    skill_name = db.Column(db.String(), nullable=False)
+    skill_use = db.Column(db.String(), nullable=False)
     active = db.Column(db.Boolean(), nullable=False, default=True)
 
 

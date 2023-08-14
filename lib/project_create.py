@@ -4,7 +4,7 @@ from model.project import Project
 def create_project():
     print("Querying for Project info...")
 
-    project_date = db.session.query(Project).filter(Project.project_title == 'Cupcake ecomerce website').first()
+    project_date = db.session.query(Project).filter(Project.project_url == 'website').first()
 
     if project_date == None:
         print("Project info not found! Creating one...")

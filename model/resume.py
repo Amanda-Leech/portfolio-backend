@@ -8,8 +8,8 @@ from db import db
 class Resume(db.Model):
     __tablename__ = "Resume"
     resume_id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
-    resume_title = db.Column(db.String(), nullable=False, unique=True)
-    resume_info = db.Column(db.String(), nullable=False, unique=True)
+    resume_title = db.Column(db.String(), nullable=False)
+    resume_info = db.Column(db.String(), nullable=False)
     active = db.Column(db.Boolean(), nullable=False, default=True)
 
     def __init__(self, resume_title, resume_info, active=True):

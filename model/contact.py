@@ -8,7 +8,7 @@ from db import db
 class Contact(db.Model):
     __tablename__ = "Contact"
     contact_id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
-    contact_name = db.Column(db.String(), nullable=False, unique=True)
+    contact_name = db.Column(db.String(), nullable=False)
     linked_in = db.Column(db.String())
     git_hub = db.Column(db.String())
     phone = db.Column(db.String(), nullable=False)

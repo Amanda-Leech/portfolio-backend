@@ -20,9 +20,14 @@ def about_get_all():
     return controller.about_get_all(request)
 
 #update
-@about.route("/about/<about_title>", methods=["POST"])
+@about.route("/about/<about_title>", methods=["PUT"])
 def about_update(about_title):
     return controller.about_update(request, about_title)
+
+#update
+@about.route("/about/id/<about_id>", methods=["PUT"])
+def about_update_id(about_id):
+    return controller.about_update_id(request, about_id)
 
 #delete
 @about.route("/about/delete/<about_id>", methods=["DELETE"])

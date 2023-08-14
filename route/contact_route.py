@@ -20,7 +20,7 @@ def contact_get_by_contact_name(contact_name):
     return controller.contact_get_by_contact_name(request, contact_name)
 
 #update
-@contact.route("/contact/<contact_name>", methods=["POST"])
+@contact.route("/contact/<contact_name>", methods=["PUT"])
 def contact_update(contact_name):
     return controller.contact_update(request, contact_name)
 

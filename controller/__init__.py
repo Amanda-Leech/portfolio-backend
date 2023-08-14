@@ -1,5 +1,5 @@
 from .auth_controller import auth_get, auth_add, auth_remove
-from .about_controller import about_get_by_title, about_add, about_delete, about_update, about_get_all, about_archive
+from .about_controller import about_update_id, about_get_by_title, about_add, about_delete, about_update, about_get_all, about_archive
 from .contact_controller import contact_get_by_contact_name,contact_add, contact_delete, contact_update, contact_get_all, contact_archive
 from .cover_controller import cover_get_by_cover_title, cover_add, cover_delete, cover_update, cover_get_all, cover_archive
 from .education_controller import education_add, education_delete, education_update, education_get_by_id, education_get_all, education_archive

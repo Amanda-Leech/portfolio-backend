@@ -8,7 +8,7 @@ from db import db
 class Project(db.Model):
     __tablename__ = "Application"
     project_id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
-    project_title = db.Column(db.String(), nullable=False, unique=True)
+    project_title = db.Column(db.String(), nullable=False)
     project_url = db.Column(db.String())
     git_url = db.Column(db.String())
     project_info = db.Column(db.String())

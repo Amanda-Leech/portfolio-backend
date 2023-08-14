@@ -20,7 +20,7 @@ def cover_get_all():
     return controller.cover_get_all(request)
 
 #update
-@cover.route("/cover/<cover_title>", methods=["POST"])
+@cover.route("/cover/<cover_title>", methods=["PUT"])
 def cover_update(cover_title):
     return controller.cover_update(request, cover_title)
 
