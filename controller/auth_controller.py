@@ -31,7 +31,7 @@ def auth_add(req: Request) -> Response:
         return jsonify({"message": "ERROR: request must be made in JSON format"}), 400
 
 
-# @authenticate_return_auth
+
 def auth_remove(req: Request, auth_info) -> Response:
         try:
             db.session.delete(auth_info)

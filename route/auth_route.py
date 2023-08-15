@@ -1,7 +1,6 @@
 from flask import request, Response, Blueprint
-# import validate_auth from "..lib/authenticate"
 from controller import auth_controller as controller
-from lib import authenticate as lib
+
 
 auth = Blueprint("auth", __name__)
 

@@ -8,6 +8,7 @@ from model.user import User
 from lib.admin import create_admin
 from lib.create_about import create_about
 from lib.contact_create import create_contact
+from lib.message_create import create_message
 from lib.cover_create import create_cover
 from lib.education_create import create_education
 from lib.project_create import create_project
@@ -26,6 +27,7 @@ def create_all():
         create_education()
         create_project()
         create_skill()
+        create_message()
 
 def create_app(config_file=None):
     app = Flask(__name__)

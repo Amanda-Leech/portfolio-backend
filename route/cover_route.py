@@ -14,6 +14,10 @@ def cover_add() -> Response:
 def cover_get_by_cover_title(cover_title):
     return controller.cover_get_by_cover_title(request, cover_title)
 
+@cover.route("/cover/id/<cover_id>", methods=["GET"])
+def cover_get_by_id(cover_id):
+    return controller.cover_get_by_id(request, cover_id)
+
 #read-all
 @cover.route("/cover", methods=["GET"])
 def cover_get_all():
