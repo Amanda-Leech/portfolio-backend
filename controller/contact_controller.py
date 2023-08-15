@@ -31,14 +31,24 @@ def contact_get_by_contact_name(req: Request, contact_name) -> Response:
         return jsonify([contact_dict]), 200
     return jsonify({"message":'You do not have this contact'}), 404
 
+#read contact one id
+def contact_get_by_id(req: Request, contact_id) -> Response:
+    contact_id = contact_id.strip()
+    contact_data = db.session.query(Contact).filter(
+        Contact.contact_id == contact_id).first()
+    if contact_data:
+        contact_dict = contact_schema.dump(contact_data)
+        return jsonify([contact_dict]), 200
+    return jsonify({"message":'You do not have this contact'}), 404
+
 #read all
 def contact_get_all(req: Request) -> Response:
     all_contacts = db.session.query(Contact).all()
     contact_list = contacts_schema.dump(all_contacts)
-    return jsonify([contact_list]), 200
+    return jsonify(contact_list), 200
 
 #update contact
-def contact_update(req: Request, contact_name) -> Response:
+def contact_update(req: Request, contact_id) -> Response:
     post_data = req.get_json()
     if post_data:
         contact_name = post_data.get('contact_name')
@@ -49,7 +59,7 @@ def contact_update(req: Request, contact_name) -> Response:
         address = post_data.get("address")
         active = post_data.get("active")
         contact_data = db.session.query(Contact).filter(
-            Contact.contact_name == contact_name).first()
+            Contact.contact_id == contact_id).first()
         if not contact_data:
             return jsonify({"message": "contact not found"}), 404
         populate_object(contact_data, post_data)

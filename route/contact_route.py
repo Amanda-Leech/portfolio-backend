@@ -19,10 +19,15 @@ def contact_get_all():
 def contact_get_by_contact_name(contact_name):
     return controller.contact_get_by_contact_name(request, contact_name)
 
+#read-one id
+@contact.route("/contact/id/<contact_name>", methods=["GET"])
+def contact_get_by_id(contact_id):
+    return controller.contact_get_by_id(request, contact_id)
+
 #update
-@contact.route("/contact/<contact_name>", methods=["PUT"])
-def contact_update(contact_name):
-    return controller.contact_update(request, contact_name)
+@contact.route("/contact/<contact_id>", methods=["PUT"])
+def contact_update(contact_id):
+    return controller.contact_update(request, contact_id)
 
 #delete
 @contact.route("/contact/delete/<contact_id>", methods=["DELETE"])
